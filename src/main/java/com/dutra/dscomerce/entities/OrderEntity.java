@@ -3,12 +3,16 @@ package com.dutra.dscomerce.entities;
 import com.dutra.dscomerce.enums.OrderStatus;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
-public class OrderEntity {
+public class OrderEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +30,9 @@ public class OrderEntity {
     @JoinColumn(name = "client_id")
     private UserEntity client;
 
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItemEntity> items = new HashSet<OrderItemEntity>();
+
     public OrderEntity() {}
 
     public OrderEntity(Long id, Instant moment, OrderStatus status, PaymentEntity payment, UserEntity client) {
@@ -34,6 +41,14 @@ public class OrderEntity {
         this.status = status;
         this.payment = payment;
         this.client = client;
+    }
+
+    public Set<OrderItemEntity> getItems() {
+        return items;
+    }
+
+    public List<ProductEntity> getProducts() {
+        return items.stream().map(OrderItemEntity::getProduct).toList();
     }
 
     public Long getId() {

@@ -2,13 +2,15 @@ package com.dutra.dscomerce.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_product")
-public class ProductEntity {
+public class ProductEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +31,9 @@ public class ProductEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private final Set<CategoryEntity> categories = new HashSet<CategoryEntity>();
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItemEntity> items = new HashSet<OrderItemEntity>();
+
     public ProductEntity() {}
     public ProductEntity(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
@@ -36,6 +41,14 @@ public class ProductEntity {
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public Set<OrderItemEntity> getItems() {
+        return items;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return items.stream().map(OrderItemEntity::getOrder).toList();
     }
 
     public Set<CategoryEntity> getCategories() {
