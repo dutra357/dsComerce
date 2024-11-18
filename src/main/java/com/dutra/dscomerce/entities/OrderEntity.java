@@ -1,0 +1,88 @@
+package com.dutra.dscomerce.entities;
+
+import com.dutra.dscomerce.enums.OrderStatus;
+import jakarta.persistence.*;
+
+import java.time.Instant;
+import java.util.Objects;
+
+@Entity
+@Table(name = "tb_order")
+public class OrderEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant moment;
+
+    private OrderStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private UserEntity client;
+
+    public OrderEntity() {}
+    public OrderEntity(Long id, Instant moment, OrderStatus status, UserEntity client) {
+        this.id = id;
+        this.moment = moment;
+        this.status = status;
+        this.client = client;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Instant getMoment() {
+        return moment;
+    }
+
+    public void setMoment(Instant moment) {
+        this.moment = moment;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public UserEntity getClient() {
+        return client;
+    }
+
+    public void setClient(UserEntity client) {
+        this.client = client;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderEntity that = (OrderEntity) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "OrderEntity{" +
+                "id=" + id +
+                ", moment=" + moment +
+                ", status=" + status +
+                ", client=" + client +
+                '}';
+    }
+}

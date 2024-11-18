@@ -3,10 +3,12 @@ package com.dutra.dscomerce.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_user1")
 public class UserEntity {
 
     @Id
@@ -23,6 +25,9 @@ public class UserEntity {
     private LocalDate birthDate;
 
     private String password;
+
+    @OneToMany(mappedBy = "client")
+    private List<OrderEntity> orders = new ArrayList<OrderEntity>();
 
     public UserEntity() {}
     public UserEntity(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
