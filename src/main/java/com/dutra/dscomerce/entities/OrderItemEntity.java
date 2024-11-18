@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order_item")
@@ -56,5 +57,18 @@ public class OrderItemEntity implements Serializable {
 
     public void setProduct(ProductEntity product) {
         id.setProduct(product);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItemEntity that = (OrderItemEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
