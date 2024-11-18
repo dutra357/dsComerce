@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_user1")
+@Table(name = "tb_user")
 public class UserEntity {
 
     @Id
@@ -17,6 +17,7 @@ public class UserEntity {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String phone;
@@ -85,6 +86,10 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
     }
 
     @Override
