@@ -4,8 +4,12 @@ import com.dutra.dscomerce.dtos.ProductDto;
 import com.dutra.dscomerce.entities.ProductEntity;
 import com.dutra.dscomerce.repositories.ProductRepository;
 import com.dutra.dscomerce.services.interfaces.ProductServiceInterface;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+
+import java.util.List;
 
 @Service
 public class ProductService implements ProductServiceInterface {
@@ -16,9 +20,14 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public ProductDto findById(Long id) {
         return builderDto(repository.findById(id).get());
+    }
+
+    @Override
+    public Page<ProductDto> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(product -> builderDto(product));
     }
 
     private ProductDto builderDto(ProductEntity product) {
