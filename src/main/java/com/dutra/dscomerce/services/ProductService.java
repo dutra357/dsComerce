@@ -49,6 +49,11 @@ public class ProductService implements ProductServiceInterface {
         return builderDto(repository.save(updatedProduct));
     }
 
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
     private ProductDto builderDto(ProductEntity product) {
         return new ProductDto(product.getId(),
                 product.getName(), product.getDescription(),
