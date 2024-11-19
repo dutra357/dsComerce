@@ -33,19 +33,36 @@ public class ProductService implements ProductServiceInterface {
     @Override
     @Transactional
     public ProductDto saveProduct(ProductEntry product) {
-        ProductEntity newProduct = new ProductEntity();
+        return builderDto(repository.save(builderProduct(product)));
+    }
 
-        newProduct.setName(product.name());
-        newProduct.setDescription(product.description());
-        newProduct.setPrice(product.price());
-        newProduct.setImgUrl(product.imgUrl());
+    @Override
+    @Transactional
+    public ProductDto updateProduct(Long id, ProductEntry product) {
+        ProductEntity updatedProduct = repository.getReferenceById(id);
 
-        return builderDto(repository.save(newProduct));
+        updatedProduct.setImgUrl(product.imgUrl());
+        updatedProduct.setPrice(product.price());
+        updatedProduct.setName(product.name());
+        updatedProduct.setDescription(product.description());
+
+        return builderDto(repository.save(updatedProduct));
     }
 
     private ProductDto builderDto(ProductEntity product) {
         return new ProductDto(product.getId(),
                 product.getName(), product.getDescription(),
                 product.getPrice(), product.getImgUrl());
+    }
+
+    private ProductEntity builderProduct(ProductEntry entry) {
+        ProductEntity product = new ProductEntity();
+
+        product.setImgUrl(entry.imgUrl());
+        product.setPrice(entry.price());
+        product.setName(entry.name());
+        product.setDescription(entry.description());
+
+        return product;
     }
 }

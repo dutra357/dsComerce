@@ -12,4 +12,6 @@ public interface ProductServiceInterface {
     Page<ProductDto> findAll(Pageable pageable);
 
     ProductDto saveProduct(ProductEntry product);
+
+    ProductDto updateProduct(Long id, ProductEntry product);
 }
