@@ -4,6 +4,7 @@ import com.dutra.dscomerce.dtos.ProductDto;
 import com.dutra.dscomerce.dtos.ProductEntry;
 import com.dutra.dscomerce.entities.ProductEntity;
 import com.dutra.dscomerce.repositories.ProductRepository;
+import com.dutra.dscomerce.services.exceptions.ResourceNotFoundException;
 import com.dutra.dscomerce.services.interfaces.ProductServiceInterface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,9 @@ public class ProductService implements ProductServiceInterface {
     @Override
     @Transactional(readOnly = true)
     public ProductDto findById(Long id) {
-        return builderDto(repository.findById(id).get());
+        return builderDto(repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Recurso não encontrado.")
+        ));
     }
 
     @Override
