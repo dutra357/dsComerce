@@ -3,6 +3,7 @@ package com.dutra.dscomerce.controllers;
 import com.dutra.dscomerce.dtos.ProductDto;
 import com.dutra.dscomerce.dtos.ProductEntry;
 import com.dutra.dscomerce.services.interfaces.ProductServiceInterface;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductEntry product) {
+    public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductEntry product) {
         ProductDto newProduct = service.saveProduct(product);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
@@ -42,7 +43,7 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductEntry product) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductEntry product) {
         ProductDto updateProduct = service.updateProduct(id, product);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
