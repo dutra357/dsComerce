@@ -27,9 +27,14 @@ public class ProductController {
         return service.findById(id);
     }
 
+//    @GetMapping
+//    public Page<ProductDto> findAll(Pageable pageable ) {
+//        return service.findAll(pageable);
+//    }
+
     @GetMapping
-    public Page<ProductDto> findAll(Pageable pageable ) {
-        return service.findAll(pageable);
+    public Page<ProductDto> findAll(Pageable pageable, @RequestParam(name = "name", defaultValue = "") String name) {
+        return service.searchByName(pageable, name);
     }
 
     @PostMapping

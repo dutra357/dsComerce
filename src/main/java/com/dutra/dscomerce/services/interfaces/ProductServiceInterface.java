@@ -11,6 +11,8 @@ public interface ProductServiceInterface {
 
     Page<ProductDto> findAll(Pageable pageable);
 
+    Page<ProductDto> searchByName(Pageable pageable, String name);
+
     ProductDto saveProduct(ProductEntry product);
 
     ProductDto updateProduct(Long id, ProductEntry product);

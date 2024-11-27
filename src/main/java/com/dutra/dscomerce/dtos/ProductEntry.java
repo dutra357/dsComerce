@@ -12,7 +12,7 @@ public record ProductEntry(
         @Size(min = 10, message = "Campo reclama 10 caracteres.")
         @NotBlank(message = "Campo obrigatório.")
         String description,
-        @Positive
+        @Positive(message = "Campo exige valor positivo.")
         Double price,
         @NotBlank(message = "Campo obrigatório.")
         String imgUrl

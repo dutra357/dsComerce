@@ -38,6 +38,11 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
+    public Page<ProductDto> searchByName(Pageable pageable, String name) {
+        return repository.searchByName(pageable, name).map(product -> builderDto(product));
+    }
+
+    @Override
     @Transactional
     public ProductDto saveProduct(ProductEntry product) {
         return builderDto(repository.save(builderProduct(product)));
