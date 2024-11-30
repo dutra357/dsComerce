@@ -1,6 +1,6 @@
 package com.dutra.dscomerce.repositories;
 
-import com.dutra.dscomerce.entities.User;
+import com.dutra.dscomerce.entities.UserEntity;
 import com.dutra.dscomerce.security.interfaces.UserDetailsProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(nativeQuery = true, value = """
 			SELECT tb_user.email AS username, tb_user.password, tb_role.id AS roleId, tb_role.authority

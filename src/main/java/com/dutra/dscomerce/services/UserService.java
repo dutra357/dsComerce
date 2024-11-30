@@ -1,7 +1,7 @@
 package com.dutra.dscomerce.services;
 
 import com.dutra.dscomerce.entities.Role;
-import com.dutra.dscomerce.entities.User;
+import com.dutra.dscomerce.entities.UserEntity;
 import com.dutra.dscomerce.repositories.UserRepository;
 import com.dutra.dscomerce.security.interfaces.UserDetailsProjection;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found.");
         }
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setEmail(username);
         user.setPassword(listResult.get(0).getPassword());
 
