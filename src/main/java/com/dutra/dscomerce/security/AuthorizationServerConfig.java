@@ -1,8 +1,8 @@
 package com.dutra.dscomerce.security;
 
-import com.devsuperior.demo.security.customgrant.CustomPasswordAuthenticationConverter;
-import com.devsuperior.demo.security.customgrant.CustomPasswordAuthenticationProvider;
-import com.devsuperior.demo.security.customgrant.CustomUserAuthorities;
+import com.dutra.dscomerce.security.customgrant.CustomPasswordAuthenticationConverter;
+import com.dutra.dscomerce.security.customgrant.CustomPasswordAuthenticationProvider;
+import com.dutra.dscomerce.security.customgrant.CustomUserAuthorities;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
