@@ -50,6 +50,10 @@ public class UserEntity implements UserDetails, Serializable {
         this.roles.add(role);
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
     public boolean hasRole(String roleName) {
         for (Role role : this.roles) {
             if (role.getAuthority().equals(roleName)) {
