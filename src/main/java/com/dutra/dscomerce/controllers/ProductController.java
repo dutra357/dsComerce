@@ -23,7 +23,7 @@ public class ProductController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}")
     public ProductDto findById(@PathVariable Long id) {
         return service.findById(id);
