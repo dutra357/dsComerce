@@ -1,5 +1,6 @@
 package com.dutra.dscomerce.services;
 
+import com.dutra.dscomerce.dtos.ProducMinDto;
 import com.dutra.dscomerce.dtos.ProductDto;
 import com.dutra.dscomerce.dtos.ProductEntry;
 import com.dutra.dscomerce.entities.ProductEntity;
@@ -38,8 +39,8 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    public Page<ProductDto> searchByName(Pageable pageable, String name) {
-        return repository.searchByName(pageable, name).map(product -> builderDto(product));
+    public Page<ProducMinDto> searchByName(Pageable pageable, String name) {
+        return repository.searchByName(pageable, name).map(product -> new ProducMinDto(product));
     }
 
     @Override

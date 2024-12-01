@@ -1,5 +1,6 @@
 package com.dutra.dscomerce.controllers;
 
+import com.dutra.dscomerce.dtos.ProducMinDto;
 import com.dutra.dscomerce.dtos.ProductDto;
 import com.dutra.dscomerce.dtos.ProductEntry;
 import com.dutra.dscomerce.services.interfaces.ProductServiceInterface;
@@ -29,8 +30,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductDto> searchByName(Pageable pageable, @RequestParam(name = "name", defaultValue = "") String name) {
-        return service.searchByName(pageable, name);
+    public ResponseEntity<Page<ProducMinDto>> searchByName(Pageable pageable, @RequestParam(name = "name", defaultValue = "") String name) {
+        return ResponseEntity.ok(service.searchByName(pageable, name));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")

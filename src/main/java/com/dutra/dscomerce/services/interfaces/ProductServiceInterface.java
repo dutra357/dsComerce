@@ -1,5 +1,6 @@
 package com.dutra.dscomerce.services.interfaces;
 
+import com.dutra.dscomerce.dtos.ProducMinDto;
 import com.dutra.dscomerce.dtos.ProductDto;
 import com.dutra.dscomerce.dtos.ProductEntry;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ public interface ProductServiceInterface {
 
     Page<ProductDto> findAll(Pageable pageable);
 
-    Page<ProductDto> searchByName(Pageable pageable, String name);
+    Page<ProducMinDto> searchByName(Pageable pageable, String name);
 
     ProductDto saveProduct(ProductEntry product);
 
