@@ -5,6 +5,7 @@ import com.dutra.dscomerce.entities.RoleEntity;
 import com.dutra.dscomerce.entities.UserEntity;
 import com.dutra.dscomerce.repositories.UserRepository;
 import com.dutra.dscomerce.security.interfaces.UserDetailsProjection;
+import com.dutra.dscomerce.services.interfaces.UserServiceInterface;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, UserServiceInterface {
 
     private final UserRepository repository;
     public UserService(UserRepository repository) {
