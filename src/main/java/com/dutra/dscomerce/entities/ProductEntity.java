@@ -56,6 +56,10 @@ public class ProductEntity implements Serializable {
         return categories;
     }
 
+    public void addCategories(CategoryEntity category) {
+        this.categories.add(category);
+    }
+
     public Long getId() {
         return id;
     }
@@ -117,6 +121,7 @@ public class ProductEntity implements Serializable {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", imgUrl='" + imgUrl + '\'' +
+                ", categories=" + categories +
                 '}';
     }
 }

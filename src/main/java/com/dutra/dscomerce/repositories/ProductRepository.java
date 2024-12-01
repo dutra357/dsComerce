@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
@@ -16,14 +17,16 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     @Query("SELECT obj FROM ProductEntity obj WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))")
     Page<ProductEntity> searchByName(Pageable pageable, String name);
 
-
-
-
-
-
     //N+1 problem - only to study. ManyToMany relation. Page do not work here.
-    @Query("SELECT obj from ProductEntity obj JOIN FETCH obj.categories")
-    List<ProductDto> findCategoriesList();
+    @Query("SELECT obj from ProductEntity obj JOIN FETCH obj.categories WHERE obj.id = :id")
+    Optional<ProductEntity> findProductWithCategories(Long id);
+
+
+
+
+
+
+
 
     //Pageable search.
     @Query("SELECT obj from ProductEntity obj JOIN FETCH obj.categories WHERE obj IN :products")

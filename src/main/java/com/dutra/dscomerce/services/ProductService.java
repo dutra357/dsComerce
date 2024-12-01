@@ -1,9 +1,11 @@
 package com.dutra.dscomerce.services;
 
+import com.dutra.dscomerce.dtos.CategoryDto;
 import com.dutra.dscomerce.dtos.ProducMinDto;
 import com.dutra.dscomerce.dtos.ProductDto;
-import com.dutra.dscomerce.dtos.ProductEntry;
+import com.dutra.dscomerce.entities.CategoryEntity;
 import com.dutra.dscomerce.entities.ProductEntity;
+import com.dutra.dscomerce.repositories.CategoryRepository;
 import com.dutra.dscomerce.repositories.ProductRepository;
 import com.dutra.dscomerce.services.exceptions.DatabaseException;
 import com.dutra.dscomerce.services.exceptions.ResourceNotFoundException;
@@ -20,47 +22,43 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService implements ProductServiceInterface {
 
     private final ProductRepository repository;
-    public ProductService(ProductRepository repository) {
+    private final CategoryRepository categoryRepository;
+    public ProductService(ProductRepository repository, CategoryRepository categoryRepository) {
         this.repository = repository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductDto findById(Long id) {
-        return builderDto(repository.findById(id).orElseThrow(
+        return new ProductDto(repository.findProductWithCategories(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado.")
         ));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Page<ProductDto> findAll(Pageable pageable) {
-        return repository.findAll(pageable).map(product -> builderDto(product));
-    }
-
-    @Override
     public Page<ProducMinDto> searchByName(Pageable pageable, String name) {
-        return repository.searchByName(pageable, name).map(product -> new ProducMinDto(product));
+        return repository.searchByName(pageable, name).map(ProducMinDto::new);
     }
 
     @Override
     @Transactional
-    public ProductDto saveProduct(ProductEntry product) {
-        return builderDto(repository.save(builderProduct(product)));
+    public ProductDto saveProduct(ProductDto productEntry) {
+        ProductEntity newProduct = new ProductEntity();
+        builderProduct(newProduct, productEntry);
+
+        return new ProductDto(repository.save(newProduct));
     }
 
     @Override
     @Transactional
-    public ProductDto updateProduct(Long id, ProductEntry product) {
+    public ProductDto updateProduct(Long id, ProductDto product) {
         try {
             ProductEntity updatedProduct = repository.getReferenceById(id);
 
-            updatedProduct.setImgUrl(product.imgUrl());
-            updatedProduct.setPrice(product.price());
-            updatedProduct.setName(product.name());
-            updatedProduct.setDescription(product.description());
+            builderProduct(updatedProduct, product);
 
-            return builderDto(repository.save(updatedProduct));
+            return new ProductDto(repository.save(updatedProduct));
         } catch (EntityNotFoundException exception) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
@@ -80,20 +78,18 @@ public class ProductService implements ProductServiceInterface {
         }
     }
 
+    private ProductEntity builderProduct(ProductEntity product, ProductDto entry) {
 
-    private ProductDto builderDto(ProductEntity product) {
-        return new ProductDto(product.getId(),
-                product.getName(), product.getDescription(),
-                product.getPrice(), product.getImgUrl());
-    }
+        product.setImgUrl(entry.getImgUrl());
+        product.setPrice(entry.getPrice());
+        product.setName(entry.getName());
+        product.setDescription(entry.getDescription());
 
-    private ProductEntity builderProduct(ProductEntry entry) {
-        ProductEntity product = new ProductEntity();
-
-        product.setImgUrl(entry.imgUrl());
-        product.setPrice(entry.price());
-        product.setName(entry.name());
-        product.setDescription(entry.description());
+        product.getCategories().clear();
+        for (CategoryDto category : entry.getCategories()) {
+            CategoryEntity cat = categoryRepository.getReferenceById(category.getId());
+            product.getCategories().add(cat);
+        }
 
         return product;
     }

@@ -2,7 +2,6 @@ package com.dutra.dscomerce.controllers;
 
 import com.dutra.dscomerce.dtos.ProducMinDto;
 import com.dutra.dscomerce.dtos.ProductDto;
-import com.dutra.dscomerce.dtos.ProductEntry;
 import com.dutra.dscomerce.services.interfaces.ProductServiceInterface;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -25,8 +24,8 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ProductDto findById(@PathVariable Long id) {
-        return service.findById(id);
+    public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping
@@ -36,22 +35,22 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductEntry product) {
+    public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductDto product) {
         ProductDto newProduct = service.saveProduct(product);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{id}").buildAndExpand(newProduct.id()).toUri();
+                .path("/{id}").buildAndExpand(newProduct.getId()).toUri();
 
         return ResponseEntity.created(uri).body(newProduct);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductEntry product) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDto product) {
         ProductDto updateProduct = service.updateProduct(id, product);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("").buildAndExpand(updateProduct.id()).toUri();
+                .path("").buildAndExpand(updateProduct.getId()).toUri();
 
         return ResponseEntity.created(uri).body(updateProduct);
     }
