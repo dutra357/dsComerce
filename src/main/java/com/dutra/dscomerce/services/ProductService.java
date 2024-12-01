@@ -78,6 +78,10 @@ public class ProductService implements ProductServiceInterface {
         }
     }
 
+    protected ProductEntity getReferenceById(Long id) {
+        return repository.getReferenceById(id);
+    }
+
     private ProductEntity builderProduct(ProductEntity product, ProductDto entry) {
 
         product.setImgUrl(entry.getImgUrl());
