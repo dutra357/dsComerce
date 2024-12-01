@@ -7,15 +7,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_role")
-public class Role implements GrantedAuthority {
+public class RoleEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String authority;
 
-    public Role() {}
-    public Role(Long id, String authority) {
+    public RoleEntity() {}
+    public RoleEntity(Long id, String authority) {
         this.id = id;
         this.authority = authority;
     }
@@ -41,8 +41,8 @@ public class Role implements GrantedAuthority {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return Objects.equals(authority, role.authority);
+        RoleEntity roleEntity = (RoleEntity) o;
+        return Objects.equals(authority, roleEntity.authority);
     }
 
     @Override

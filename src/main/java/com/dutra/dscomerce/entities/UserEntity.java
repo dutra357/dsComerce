@@ -34,7 +34,7 @@ public class UserEntity implements UserDetails, Serializable {
     @ManyToMany
     @JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<Role>();
+    private Set<RoleEntity> roleEntities = new HashSet<RoleEntity>();
 
     public UserEntity() {}
     public UserEntity(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
@@ -46,17 +46,17 @@ public class UserEntity implements UserDetails, Serializable {
         this.password = password;
     }
 
-    public void addRole(Role role) {
-        this.roles.add(role);
+    public void addRole(RoleEntity roleEntity) {
+        this.roleEntities.add(roleEntity);
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<RoleEntity> getRoles() {
+        return roleEntities;
     }
 
     public boolean hasRole(String roleName) {
-        for (Role role : this.roles) {
-            if (role.getAuthority().equals(roleName)) {
+        for (RoleEntity roleEntity : this.roleEntities) {
+            if (roleEntity.getAuthority().equals(roleName)) {
                 return true;
             }
         }
@@ -105,7 +105,7 @@ public class UserEntity implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return this.roleEntities;
     }
 
     public String getPassword() {

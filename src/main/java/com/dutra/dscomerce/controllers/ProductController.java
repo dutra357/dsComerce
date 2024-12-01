@@ -23,7 +23,6 @@ public class ProductController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}")
     public ProductDto findById(@PathVariable Long id) {
         return service.findById(id);
@@ -34,7 +33,7 @@ public class ProductController {
         return service.searchByName(pageable, name);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductEntry product) {
         ProductDto newProduct = service.saveProduct(product);
@@ -45,6 +44,7 @@ public class ProductController {
         return ResponseEntity.created(uri).body(newProduct);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductEntry product) {
         ProductDto updateProduct = service.updateProduct(id, product);
@@ -55,6 +55,7 @@ public class ProductController {
         return ResponseEntity.created(uri).body(updateProduct);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

@@ -1,6 +1,6 @@
 package com.dutra.dscomerce.services;
 
-import com.dutra.dscomerce.entities.Role;
+import com.dutra.dscomerce.entities.RoleEntity;
 import com.dutra.dscomerce.entities.UserEntity;
 import com.dutra.dscomerce.repositories.UserRepository;
 import com.dutra.dscomerce.security.interfaces.UserDetailsProjection;
@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(listResult.get(0).getPassword());
 
         for (UserDetailsProjection projection : listResult) {
-            user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+            user.addRole(new RoleEntity(projection.getRoleId(), projection.getAuthority()));
         }
 
         return user;
