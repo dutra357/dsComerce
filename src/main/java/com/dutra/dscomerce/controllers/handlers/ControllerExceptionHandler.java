@@ -3,6 +3,7 @@ package com.dutra.dscomerce.controllers.handlers;
 import com.dutra.dscomerce.dtos.errors.CustomError;
 import com.dutra.dscomerce.dtos.errors.ValidationError;
 import com.dutra.dscomerce.services.exceptions.DatabaseException;
+import com.dutra.dscomerce.services.exceptions.ForbidenException;
 import com.dutra.dscomerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,14 @@ public class ControllerExceptionHandler {
         for (FieldError err : exception.getBindingResult().getFieldErrors()) {
             error.addError(err.getField(), err.getDefaultMessage());
         }
+
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(ForbidenException.class)
+    public ResponseEntity<CustomError> forbidenException(ForbidenException exception, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError error = new CustomError(Instant.now(), status.value(), exception.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(status).body(error);
     }

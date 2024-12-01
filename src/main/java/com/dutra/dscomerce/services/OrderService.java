@@ -9,6 +9,7 @@ import com.dutra.dscomerce.entities.UserEntity;
 import com.dutra.dscomerce.enums.OrderStatus;
 import com.dutra.dscomerce.repositories.OrderItemRepository;
 import com.dutra.dscomerce.repositories.OrderRepository;
+import com.dutra.dscomerce.services.exceptions.ForbidenException;
 import com.dutra.dscomerce.services.exceptions.ResourceNotFoundException;
 import com.dutra.dscomerce.services.interfaces.OrderServiceInterface;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,13 @@ import java.time.Instant;
 @Service
 public class OrderService implements OrderServiceInterface {
 
+    private final AuthService authService;
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository repository;
     private final UserService userService;
     private final ProductService productService;
-    public OrderService(OrderItemRepository orderItemRepository, OrderRepository repository, UserService userService, ProductService productService) {
+    public OrderService(AuthService authService, OrderItemRepository orderItemRepository, OrderRepository repository, UserService userService, ProductService productService) {
+        this.authService = authService;
         this.orderItemRepository = orderItemRepository;
         this.repository = repository;
         this.userService = userService;
@@ -33,9 +36,12 @@ public class OrderService implements OrderServiceInterface {
     @Transactional(readOnly = true)
     @Override
     public OrderDto findById(Long id) {
+
         OrderEntity order = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado.")
         );
+
+        authService.validationSelfOrAdmin(order.getClient().getId());
 
         return new OrderDto(order);
     }
