@@ -5,9 +5,9 @@ import java.time.Instant;
 public class CustomError {
 
     private Instant timestamp;
-    private int status;
     private String error;
     private String path;
+    private int status;
 
     public CustomError(){}
     public CustomError(Instant timestamp, int status, String error, String path) {

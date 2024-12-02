@@ -2,10 +2,7 @@ package com.dutra.dscomerce.dtos;
 
 import com.dutra.dscomerce.entities.CategoryEntity;
 import com.dutra.dscomerce.entities.ProductEntity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,7 @@ public class ProductDto {
     @NotBlank(message = "Campo obrigatório.")
     private String description;
     @Positive(message = "Campo exige valor positivo.")
+    @NotNull(message = "Campo obrigatório.")
     private Double price;
     @NotBlank(message = "Campo obrigatório.")
     private String imgUrl;
