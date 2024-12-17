@@ -81,6 +81,7 @@ public class ResourceServerConfig {
 		return new CorsFilter(corsConfigurationSource());
 	}
 
+//Para versão 3.3.5 do Spring
 //	FilterRegistrationBean<CorsFilter> corsFilter() {
 //		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(
 //				new CorsFilter(corsConfigurationSource()));
